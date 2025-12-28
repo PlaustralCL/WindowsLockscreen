@@ -7,8 +7,9 @@
 # Edit your registry and create the following key : 
 # [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP] 
 # add the REG_DWORD(32) Hex val: LockScreenImageStatus=00000001 
-# add the REG_SZ: LockScreenImagePath=\sharePath\lockscreen.jpg 
-# add the REG_SZ: LockScreenImageUrl=\sharePath\lockscreen.jpg
+# add the REG_SZ: LockScreenImagePath=\<absolute path to image>\lockscreen.jpg 
+# add the REG_SZ: LockScreenImageUrl=\<absolute path to image>\lockscreen.jpg
+# Source: https://web.archive.org/web/20251019141633/https://community.spiceworks.com/t/manage-lock-screen-image/1014209
 
 # While the above registry changes are in effect, the lock screen image cannot
 # be changed from the normal GUI in Settings. The registry settings will need to
