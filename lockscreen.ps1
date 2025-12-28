@@ -1,4 +1,4 @@
-# Randomly selects a file name from the folder. This file will be copied to a
+# Selects a file name from the image collection folder. This file will be copied to a
 # designated location to be the lock screen image. A copy of the file name as
 # well as the timestamp the change was made is recorded in a local log file.
 
@@ -20,9 +20,21 @@
 # change the lock screen image each morning, or as soon as the computer is run
 # that day.
 
-$FileName = Get-ChildItem -Path c:\wallpaper\wallpaper\ -Name | Get-Random
-Copy-Item c:\wallpaper\wallpaper\$FileName -Destination c:\wallpaper\lockscreen\lockscreen.jpg
+$CollectionFolder = ".\image_collection"
+$DestinationFolder = ".\daily_lockscreen_image"
+
+$NumberOfImages = (Get-ChildItem -Path $CollectionFolder -File).Count
+$DayOfYear = (Get-Date).DayOfYear
+$StartingNumber = 1001
+$NewFileNumber = ($DayOfYear % $NumberOfImages) + $StartingNumber
+$NewFileName = "$NewFileNumber.jpg"
+$NewFilePath = Resolve-Path -Path (Join-Path -Path $CollectionFolder -ChildPath $NewFileName)
+$DestinationPath = Resolve-Path -Path $DestinationFolder
+
+
+# Copy the selected file to the DailyLockScreen folder
+Copy-Item $NewFilePath -Destination "$DestinationPath\lockscreen.jpg"
 
 # Add the the name of the selected image to the log file
 $TimeStamp = (Get-Date).toString("yyyy/MM/dd HH:mm:ss")
-Add-Content -Path c:\wallpaper\log.txt -Value ($TimeStamp + " " + $FileName)
+Add-Content -Path .\log.txt -Value ($TimeStamp + " " + $NewFileName)
