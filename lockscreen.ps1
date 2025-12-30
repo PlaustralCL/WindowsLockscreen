@@ -20,21 +20,19 @@
 # change the lock screen image each morning, or as soon as the computer is run
 # that day.
 
-$CollectionFolder = ".\image_collection"
-$DestinationFolder = ".\daily_lockscreen_image"
+$ImageCollectionFolder = "$PSScriptRoot\image_collection"
+$DestinationPath = "$PSScriptRoot\daily_lockscreen_image"
 
-$NumberOfImages = (Get-ChildItem -Path $CollectionFolder -File).Count
+$NumberOfImages = (Get-ChildItem -Path $ImageCollectionFolder -File).Count
 $DayOfYear = (Get-Date).DayOfYear
 $StartingNumber = 1001
-$NewFileNumber = ($DayOfYear % $NumberOfImages) + $StartingNumber
-$NewFileName = "$NewFileNumber.jpg"
-$NewFilePath = Resolve-Path -Path (Join-Path -Path $CollectionFolder -ChildPath $NewFileName)
-$DestinationPath = Resolve-Path -Path $DestinationFolder
-
+$DailyNumber = ($DayOfYear % $NumberOfImages) + $StartingNumber
+$ReplacementFileName = "$DailyNumber.jpg"
+$PathToReplacementFile = Join-Path -Path $ImageCollectionFolder -ChildPath $ReplacementFileName
 
 # Copy the selected file to the DailyLockScreen folder
-Copy-Item $NewFilePath -Destination "$DestinationPath\lockscreen.jpg"
+Copy-Item $PathToReplacementFile -Destination "$DestinationPath\lockscreen.jpg"
 
 # Add the the name of the selected image to the log file
 $TimeStamp = (Get-Date).toString("yyyy/MM/dd HH:mm:ss")
-Add-Content -Path .\log.txt -Value ($TimeStamp + " " + $NewFileName)
+Add-Content -Path "$PSScriptRoot\log.txt" -Value ($TimeStamp + " " + $ReplacementFileName)
