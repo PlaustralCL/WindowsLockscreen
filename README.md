@@ -1,11 +1,11 @@
 # Lockscreen update
-
 Updates the windows lockscreen based on a selected image from the
 image collection. This allows a rotating image to be displayed without the
 ads that Microsoft includes in the default lockscreen.  The displayed image will
 always have the same filename, however, the contents of the file will be replaced.
 
 ## Setup
+
 ### Registry Updates
 The following changes to the registry are required:
 - Edit your registry and create the following key: `[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP]`
@@ -31,8 +31,11 @@ The following changes to the registry are required:
 Source: https://web.archive.org/web/20251019141633/https://community.spiceworks.com/t/manage-lock-screen-image/1014209
 
 ### Task Scheduler
-- Set up a task in Task Scheduler to run every day. It can be at a set time or
-after each startup. 
+Set up a task in Task Scheduler to run every day. It can be at a set time or
+after each startup. The goal is for powershell to have as little impact as possible
+on the user when the task runs. To achieve this, we specify `-NoProfile` to prevent
+spending time on reading the Powershell profile and `-WindowStyle Hidden` to minimize
+the time the terminal is open and blocking the screen.
 - In the action tab, the action should be `Start a program` 
     - Program/script: `Powershell.exe`
-    - Add arguments: `<absolute path to script>\lockscreen.ps1`
+    - Add arguments: `-NoProfile -WindowStyle Hidden <absolute path to script>\lockscreen.ps1`    
